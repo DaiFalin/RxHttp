@@ -74,7 +74,9 @@ public class HttpLoggingInterceptor implements Interceptor {
     }
 
     public HttpLoggingInterceptor setLevel(Level level) {
-        if (level == null) throw new NullPointerException("level == null. Use Level.NONE instead.");
+        if (level == null) {
+            throw new NullPointerException("level == null. Use Level.NONE instead.");
+        }
         this.level = level;
         return this;
     }
@@ -119,7 +121,7 @@ public class HttpLoggingInterceptor implements Interceptor {
         Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
 
         try {
-            String requestStartMessage = "--> " + request.method() + ' ' + URLDecoder.decode(request.url().url().toString(),UTF8.name()) + ' ' + protocol;
+            String requestStartMessage = "--> " + request.method() + ' ' + URLDecoder.decode(request.url().url().toString(), UTF8.name()) + ' ' + protocol;
             log(requestStartMessage);
 
             if (logHeaders) {
@@ -153,7 +155,7 @@ public class HttpLoggingInterceptor implements Interceptor {
         boolean logHeaders = (level == Level.BODY || level == Level.HEADERS);
 
         try {
-            log("<-- " + clone.code() + ' ' + clone.message() + ' ' +URLDecoder.decode(clone.request().url().url().toString(),UTF8.name()) + " (" + tookMs + "ms）");
+            log("<-- " + clone.code() + ' ' + clone.message() + ' ' + URLDecoder.decode(clone.request().url().url().toString(), UTF8.name()) + " (" + tookMs + "ms）");
             if (logHeaders) {
                 log(" ");
                 Headers headers = clone.headers();
@@ -186,7 +188,9 @@ public class HttpLoggingInterceptor implements Interceptor {
      * of code points to detect unicode control characters commonly used in binary file signatures.
      */
     static boolean isPlaintext(MediaType mediaType) {
-        if (mediaType == null) return false;
+        if (mediaType == null) {
+            return false;
+        }
         if (mediaType.type() != null && mediaType.type().equals("text")) {
             return true;
         }
@@ -212,13 +216,28 @@ public class HttpLoggingInterceptor implements Interceptor {
             if (contentType != null) {
                 charset = contentType.charset(UTF8);
             }
-            log("\tbody:" + URLDecoder.decode(buffer.readString(charset),UTF8.name()));
+            String result = buffer.readString(charset);
+            log("\tbody:" + URLDecoder.decode(replacer(result), UTF8.name()));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void e(java.lang.Throwable t) {
-        if (isLogEnable) t.printStackTrace();
+    private String replacer(String content) {
+        String data = content;
+        try {
+            data = data.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
+            data = data.replaceAll("\\+", "%2B");
+            data = URLDecoder.decode(data, "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    public void e(Throwable t) {
+        if (isLogEnable) {
+            t.printStackTrace();
+        }
     }
 }

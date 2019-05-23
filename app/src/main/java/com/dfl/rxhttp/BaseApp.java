@@ -12,6 +12,6 @@ public class BaseApp extends Application {
         EasyHttp easyHttp = EasyHttp.getInstance()
                 .debug(" Http日志", true)
                 //设置全局URL
-                .setBaseUrl("http://es.staq360.com/");
+                .setBaseUrl("");
     }
 }

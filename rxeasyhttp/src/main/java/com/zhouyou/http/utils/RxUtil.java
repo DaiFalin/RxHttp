@@ -19,7 +19,6 @@ package com.zhouyou.http.utils;
 
 import com.zhouyou.http.func.HandleFuc;
 import com.zhouyou.http.func.HttpResponseFunc;
-import com.zhouyou.http.model.ApiResult;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -64,10 +63,10 @@ public class RxUtil {
         };
     }
 
-    public static <T> ObservableTransformer<ApiResult<T>, T> _io_main() {
-        return new ObservableTransformer<ApiResult<T>, T>() {
+    public static <T> ObservableTransformer<T, T> _io_main() {
+        return new ObservableTransformer<T, T>() {
             @Override
-            public ObservableSource<T> apply(@NonNull Observable<ApiResult<T>> upstream) {
+            public ObservableSource<T> apply(@NonNull Observable<T> upstream) {
                 return upstream
                         .subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
@@ -91,10 +90,10 @@ public class RxUtil {
     }
 
 
-    public static <T> ObservableTransformer<ApiResult<T>, T> _main() {
-        return new ObservableTransformer<ApiResult<T>, T>() {
+    public static <T> ObservableTransformer<T, T> _main() {
+        return new ObservableTransformer<T, T>() {
             @Override
-            public ObservableSource<T> apply(@NonNull Observable<ApiResult<T>> upstream) {
+            public ObservableSource<T> apply(@NonNull Observable<T> upstream) {
                 return upstream
                         //.observeOn(AndroidSchedulers.mainThread())
                         .map(new HandleFuc<T>())

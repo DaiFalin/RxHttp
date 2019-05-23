@@ -25,7 +25,6 @@ import com.zhouyou.http.func.ApiResultFunc;
 import com.zhouyou.http.func.CacheResultFunc;
 import com.zhouyou.http.func.HandleFuc;
 import com.zhouyou.http.func.RetryExceptionFunc;
-import com.zhouyou.http.model.ApiResult;
 import com.zhouyou.http.subsciber.CallBackSubsciber;
 import com.zhouyou.http.transformer.HandleErrTransformer;
 import com.zhouyou.http.utils.RxUtil;
@@ -45,7 +44,7 @@ import okhttp3.ResponseBody;
  * 日期： 2017/5/15 17:04 <br>
  * 版本： v1.0<br>
  */
-@SuppressWarnings(value={"unchecked", "deprecation"})
+@SuppressWarnings(value = {"unchecked", "deprecation"})
 public class CustomRequest extends BaseRequest<CustomRequest> {
     public CustomRequest() {
         super("");
@@ -95,7 +94,7 @@ public class CustomRequest extends BaseRequest<CustomRequest> {
      * 调用call返回一个Observable,针对ApiResult的业务<T>
      * 举例：如果你给的是一个Observable<ApiResult<AuthModel>> 那么返回的<T>是AuthModel
      */
-    public <T> Observable<T> apiCall(Observable<ApiResult<T>> observable) {
+    public <T> Observable<T> apiCall(Observable<T> observable) {
         checkvalidate();
         return observable
                 .map(new HandleFuc<T>())
@@ -105,11 +104,11 @@ public class CustomRequest extends BaseRequest<CustomRequest> {
     }
 
     public <T> Disposable apiCall(Observable<T> observable, CallBack<T> callBack) {
-        return call(observable, new CallBackProxy<ApiResult<T>, T>(callBack) {
+        return call(observable, new CallBackProxy<T>(callBack) {
         });
     }
 
-    public <T> Disposable call(Observable<T> observable, CallBackProxy<? extends ApiResult<T>, T> proxy) {
+    public <T> Disposable call(Observable<T> observable, CallBackProxy<T> proxy) {
         Observable<CacheResult<T>> cacheobservable = build().toObservable(observable, proxy);
         if (CacheResult.class != proxy.getCallBack().getRawType()) {
             return cacheobservable.compose(new ObservableTransformer<CacheResult<T>, T>() {
@@ -123,8 +122,8 @@ public class CustomRequest extends BaseRequest<CustomRequest> {
         }
     }
 
-    @SuppressWarnings(value={"unchecked", "deprecation"})
-    private <T> Observable<CacheResult<T>> toObservable(Observable observable, CallBackProxy<? extends ApiResult<T>, T> proxy) {
+    @SuppressWarnings(value = {"unchecked", "deprecation"})
+    private <T> Observable<CacheResult<T>> toObservable(Observable observable, CallBackProxy<T> proxy) {
         return observable.map(new ApiResultFunc(proxy != null ? proxy.getType() : new TypeToken<ResponseBody>() {
         }.getType()))
                 .compose(isSyncRequest ? RxUtil._main() : RxUtil._io_main())

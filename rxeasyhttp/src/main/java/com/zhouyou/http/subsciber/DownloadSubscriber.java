@@ -225,18 +225,20 @@ public class DownloadSubscriber<ResponseBody extends okhttp3.ResponseBody> exten
             return;
         }
         //if (Utils.checkMain()) {
-        Observable.just(new ApiException(e, "100")).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<ApiException>() {
-            @Override
-            public void accept(@NonNull ApiException e) throws Exception {
-                if (mCallBack != null) {
-                    mCallBack.onError(e);
-                }
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable throwable) throws Exception {
+        Observable.just(new ApiException(e, "100"))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ApiException>() {
+                    @Override
+                    public void accept(@NonNull ApiException e) throws Exception {
+                        if (mCallBack != null) {
+                            mCallBack.onError(e);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
 
-            }
-        });
+                    }
+                });
     }
 }

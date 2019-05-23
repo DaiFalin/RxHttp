@@ -16,9 +16,7 @@
 
 package com.zhouyou.http.func;
 
-import com.zhouyou.http.exception.ApiException;
 import com.zhouyou.http.exception.ServerException;
-import com.zhouyou.http.model.ApiResult;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
@@ -30,13 +28,13 @@ import io.reactivex.functions.Function;
  * 日期： 2017/5/15 16:54 <br>
  * 版本： v1.0<br>
  */
-public class HandleFuc<T> implements Function<ApiResult<T>, T> {
+public class HandleFuc<T> implements Function<T, T> {
     @Override
-    public T apply(@NonNull ApiResult<T> tApiResult) throws Exception {
-        if (ApiException.isOk(tApiResult)) {
-            return tApiResult.getData();// == null ? Optional.ofNullable(tApiResult.getData()).orElse(null) : tApiResult.getData();
+    public T apply(@NonNull T tApiResult) throws Exception {
+        if (tApiResult != null) {
+            return tApiResult;// == null ? Optional.ofNullable(tApiResult.getData()).orElse(null) : tApiResult.getData();
         } else {
-            throw new ServerException(tApiResult.getCode(), tApiResult.getMsg());
+            throw new ServerException("0", "tApiResult is null");
         }
     }
 }

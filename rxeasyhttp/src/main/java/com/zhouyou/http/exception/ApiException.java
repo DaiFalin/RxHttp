@@ -21,7 +21,6 @@ import android.net.ParseException;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSyntaxException;
-import com.zhouyou.http.model.ApiResult;
 
 import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONException;
@@ -54,7 +53,6 @@ public class ApiException extends Exception {
     private static final int GATEWAY_TIMEOUT = 504;
 
     private final String code;
-    private String displayMessage;
 
     public static final int UNKNOWN = 1000;
     public static final int PARSE_ERROR = 1001;
@@ -69,25 +67,6 @@ public class ApiException extends Exception {
 
     public String getCode() {
         return code;
-    }
-
-    public String getDisplayMessage() {
-        return displayMessage;
-    }
-
-    public void setDisplayMessage(String msg) {
-        this.displayMessage = msg + "(code:" + code + ")";
-    }
-
-    public static boolean isOk(ApiResult apiResult) {
-        if (apiResult == null) {
-            return false;
-        }
-        if (apiResult.isOk() /*|| ignoreSomeIssue(apiResult.getCode())*/) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public static ApiException handleException(Throwable e) {

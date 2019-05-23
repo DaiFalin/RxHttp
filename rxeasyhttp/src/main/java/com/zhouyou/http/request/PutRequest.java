@@ -24,7 +24,6 @@ import com.zhouyou.http.callback.CallClazzProxy;
 import com.zhouyou.http.func.ApiResultFunc;
 import com.zhouyou.http.func.CacheResultFunc;
 import com.zhouyou.http.func.RetryExceptionFunc;
-import com.zhouyou.http.model.ApiResult;
 import com.zhouyou.http.subsciber.CallBackSubsciber;
 import com.zhouyou.http.utils.RxUtil;
 
@@ -50,17 +49,17 @@ public class PutRequest extends BaseBodyRequest<PutRequest> {
     }
 
     public <T> Observable<T> execute(Class<T> clazz) {
-        return execute(new CallClazzProxy<ApiResult<T>, T>(clazz) {
+        return execute(new CallClazzProxy<T>(clazz) {
         });
     }
 
     public <T> Observable<T> execute(Type type) {
-        return execute(new CallClazzProxy<ApiResult<T>, T>(type) {
+        return execute(new CallClazzProxy<T>(type) {
         });
     }
 
-    @SuppressWarnings(value={"unchecked", "deprecation"})
-    public <T> Observable<T> execute(CallClazzProxy<? extends ApiResult<T>, T> proxy) {
+    @SuppressWarnings(value = {"unchecked", "deprecation"})
+    public <T> Observable<T> execute(CallClazzProxy<T> proxy) {
         return build().generateRequest()
                 .map(new ApiResultFunc(proxy.getType()))
                 .compose(isSyncRequest ? RxUtil._main() : RxUtil._io_main())
@@ -75,12 +74,12 @@ public class PutRequest extends BaseBodyRequest<PutRequest> {
     }
 
     public <T> Disposable execute(CallBack<T> callBack) {
-        return execute(new CallBackProxy<ApiResult<T>, T>(callBack) {
+        return execute(new CallBackProxy<T>(callBack) {
         });
     }
 
     @SuppressWarnings("unchecked")
-    public <T> Disposable execute(CallBackProxy<? extends ApiResult<T>, T> proxy) {
+    public <T> Disposable execute(CallBackProxy<T> proxy) {
         Observable<CacheResult<T>> observable = build().toObservable(generateRequest(), proxy);
         if (CacheResult.class != proxy.getCallBack().getRawType()) {
             return observable.compose(new ObservableTransformer<CacheResult<T>, T>() {
@@ -95,7 +94,7 @@ public class PutRequest extends BaseBodyRequest<PutRequest> {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> Observable<CacheResult<T>> toObservable(Observable observable, CallBackProxy<? extends ApiResult<T>, T> proxy) {
+    private <T> Observable<CacheResult<T>> toObservable(Observable observable, CallBackProxy<T> proxy) {
         return observable.map(new ApiResultFunc(proxy != null ? proxy.getType() : new TypeToken<ResponseBody>() {
         }.getType()))
                 .compose(isSyncRequest ? RxUtil._main() : RxUtil._io_main())
@@ -110,7 +109,7 @@ public class PutRequest extends BaseBodyRequest<PutRequest> {
         } else if (this.json != null) {//Json
             RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), this.json);
             return apiManager.putJson(url, body);
-        }  else if (this.object != null) {//自定义的请求object
+        } else if (this.object != null) {//自定义的请求object
             return apiManager.putBody(url, object);
         } else if (this.string != null) {//文本内容
             RequestBody body = RequestBody.create(mediaType, this.string);

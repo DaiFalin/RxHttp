@@ -109,7 +109,7 @@ public abstract class BaseRequest<R extends BaseRequest> {
         this.url = url;
         context = EasyHttp.getContext();
         EasyHttp config = EasyHttp.getInstance();
-        this.baseUrl = config.getBaseUrl();
+        this.baseUrl = EasyHttp.getBaseUrl();
         if (!TextUtils.isEmpty(this.baseUrl)) {
             httpUrl = HttpUrl.parse(baseUrl);
         }
@@ -117,13 +117,13 @@ public abstract class BaseRequest<R extends BaseRequest> {
             httpUrl = HttpUrl.parse(url);
             baseUrl = httpUrl.url().getProtocol() + "://" + httpUrl.url().getHost() + "/";
         }
-        cacheMode = config.getCacheMode();                                //添加缓存模式
-        cacheTime = config.getCacheTime();                                //缓存时间
-        retryCount = config.getRetryCount();                              //超时重试次数
-        retryDelay = config.getRetryDelay();                              //超时重试延时
-        retryIncreaseDelay = config.getRetryIncreaseDelay();              //超时重试叠加延时
+        cacheMode = EasyHttp.getCacheMode();                                //添加缓存模式
+        cacheTime = EasyHttp.getCacheTime();                                //缓存时间
+        retryCount = EasyHttp.getRetryCount();                              //超时重试次数
+        retryDelay = EasyHttp.getRetryDelay();                              //超时重试延时
+        retryIncreaseDelay = EasyHttp.getRetryIncreaseDelay();              //超时重试叠加延时
         //Okhttp  cache
-        cache = config.getHttpCache();
+        cache = EasyHttp.getHttpCache();
         //默认添加 Accept-Language
         String acceptLanguage = HttpHeaders.getAcceptLanguage();
         if (!TextUtils.isEmpty(acceptLanguage))

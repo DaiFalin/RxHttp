@@ -18,7 +18,6 @@ package com.zhouyou.http.callback;
 
 import com.google.gson.internal.$Gson$Types;
 import com.zhouyou.http.cache.model.CacheResult;
-import com.zhouyou.http.model.ApiResult;
 import com.zhouyou.http.utils.Utils;
 
 import java.lang.reflect.ParameterizedType;
@@ -35,10 +34,10 @@ import okhttp3.ResponseBody;
  * 日期： 2017/5/16 17:59 <br>
  * 版本： v1.0<br>
  */
-public abstract class CallBackProxy<T extends ApiResult<R>, R> implements IType<T> {
-    CallBack<R> mCallBack;
+public abstract class CallBackProxy<T> implements IType<T> {
+    CallBack<T> mCallBack;
 
-    public CallBackProxy(CallBack<R> callBack) {
+    public CallBackProxy(CallBack<T> callBack) {
         mCallBack = callBack;
     }
 

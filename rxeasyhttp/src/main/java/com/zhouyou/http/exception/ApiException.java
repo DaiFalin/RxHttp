@@ -53,6 +53,7 @@ public class ApiException extends Exception {
     private static final int GATEWAY_TIMEOUT = 504;
 
     private final String code;
+    private String displayMessage;
 
     public static final int UNKNOWN = 1000;
     public static final int PARSE_ERROR = 1001;
@@ -67,6 +68,14 @@ public class ApiException extends Exception {
 
     public String getCode() {
         return code;
+    }
+
+    public String getDisplayMessage() {
+        return displayMessage;
+    }
+
+    public void setDisplayMessage(String msg) {
+        this.displayMessage = msg + "(code:" + code + ")";
     }
 
     public static ApiException handleException(Throwable e) {
@@ -143,10 +152,6 @@ public class ApiException extends Exception {
     public String getMessage() {
         return message;
     }
-
-    /*public String getErrMessage() {
-        return message;
-    }*/
 
     /**
      * 约定异常

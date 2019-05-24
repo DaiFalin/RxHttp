@@ -50,21 +50,13 @@ public class ApiResultFunc<T> implements Function<ResponseBody, T> {
 
     @Override
     public T apply(@NonNull ResponseBody responseBody) throws Exception {
-        T apiResult = null;
-        try {
-            final String json = responseBody.string();
-            final Class<T> clazz = Utils.getClass(type, 0);
-            if (clazz.equals(String.class)) {
-                apiResult = (T) json;
-            } else {
-                if (json != null) {
-                    apiResult = gson.fromJson(json, clazz);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            responseBody.close();
+        T apiResult;
+        final String json = responseBody.string();
+        final Class<T> clazz = Utils.getClass(type, 0);
+        if (clazz.equals(String.class)) {
+            apiResult = (T) json;
+        } else {
+            apiResult = gson.fromJson(json, clazz);
         }
         return apiResult;
     }

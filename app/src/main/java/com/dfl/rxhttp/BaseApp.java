@@ -9,9 +9,9 @@ public class BaseApp extends Application {
     public void onCreate() {
         super.onCreate();
         EasyHttp.init(this);
-        EasyHttp easyHttp = EasyHttp.getInstance()
+        EasyHttp.getInstance()
                 .debug(" Http日志", true)
                 //设置全局URL
-                .setBaseUrl("");
+                .setBaseUrl("https://www.qchui.cn/");
     }
 }

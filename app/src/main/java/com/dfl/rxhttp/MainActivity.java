@@ -20,8 +20,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.textView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EasyHttp.get("admin/public/sys/dict/type/SYS_CONFIG_H5")
-                        .execute(new CallBack<String>() {
+                EasyHttp.post("travels/api.php")
+                        .params("ctl", "train")
+                        .params("act", "start_to_data")
+                        .execute(new CallBack<Model>() {
                             @Override
                             public void onStart() {
 
@@ -38,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onSuccess(String s) {
-                                Log.d(TAG, "onSuccess: " + s);
+                            public void onSuccess(Model s) {
+                                Log.d(TAG, "onSuccess: " + s.getStatus());
                             }
                         });
             }

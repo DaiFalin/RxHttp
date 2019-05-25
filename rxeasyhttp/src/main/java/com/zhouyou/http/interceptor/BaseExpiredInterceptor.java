@@ -16,8 +16,6 @@
 
 package com.zhouyou.http.interceptor;
 
-import com.zhouyou.http.utils.HttpLog;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -53,7 +51,7 @@ public abstract class BaseExpiredInterceptor implements Interceptor {
             charset = contentType.charset(UTF8);
         }
         String bodyString = buffer.clone().readString(charset);
-        HttpLog.i("网络拦截器:" + bodyString + " host:" + request.url().toString());
+        //HttpLog.i("网络拦截器:" + bodyString + " host:" + request.url().toString());
         boolean isText = isText(contentType);
         if (!isText) {
             return response;

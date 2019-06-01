@@ -42,6 +42,7 @@ public class ApiResultFunc<T> implements Function<ResponseBody, T> {
     public ApiResultFunc(Type type) {
         gson = new GsonBuilder()
                 .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
+                .enableComplexMapKeySerialization()
                 .serializeNulls()
                 .create();
         this.type = type;

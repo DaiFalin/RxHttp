@@ -20,7 +20,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zhouyou.http.utils.Utils;
 
-import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 

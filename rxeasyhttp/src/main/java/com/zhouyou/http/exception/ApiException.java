@@ -21,6 +21,7 @@ import android.net.ParseException;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSyntaxException;
+import com.zhouyou.http.utils.HttpLog;
 
 import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONException;
@@ -80,6 +81,8 @@ public class ApiException extends Exception {
 
     public static ApiException handleException(Throwable e) {
         ApiException ex;
+        e.printStackTrace();
+        HttpLog.e("ApiException错误 :", e);
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
             ex = new ApiException(httpException, String.valueOf(httpException.code()));

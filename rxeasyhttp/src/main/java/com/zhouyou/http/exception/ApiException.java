@@ -138,7 +138,7 @@ public class ApiException extends Exception {
             return ex;
         } else if (e instanceof UnknownHostException) {
             ex = new ApiException(e, ERROR.UNKNOWNHOST_ERROR);
-            ex.message = "无法解析该域名";
+            ex.message = "网络连接失败，请检查网络连接";
             return ex;
         } else if (e instanceof NullPointerException) {
             ex = new ApiException(e, ERROR.NULLPOINTER_EXCEPTION);

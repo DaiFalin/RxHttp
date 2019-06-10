@@ -22,6 +22,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSyntaxException;
 import com.zhouyou.http.model.ApiResult;
+import com.zhouyou.http.utils.HttpLog;
 
 import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONException;
@@ -92,6 +93,8 @@ public class ApiException extends Exception {
 
     public static ApiException handleException(Throwable e) {
         ApiException ex;
+        e.printStackTrace();
+        HttpLog.e("ApiException", e);
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
             ex = new ApiException(httpException, String.valueOf(httpException.code()));
@@ -147,7 +150,7 @@ public class ApiException extends Exception {
             return ex;
         } else if (e instanceof UnknownHostException) {
             ex = new ApiException(e, ERROR.UNKNOWNHOST_ERROR);
-            ex.message = "无法解析该域名";
+            ex.message = "网络连接错误，请检查网络连接";
             return ex;
         } else if (e instanceof NullPointerException) {
             ex = new ApiException(e, ERROR.NULLPOINTER_EXCEPTION);
